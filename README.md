@@ -41,6 +41,9 @@
 <BR>![Themes](https://raw.githubusercontent.com/hoffstadt/DearPyGui/assets/linuxthemes.PNG) 
   
 ## Features  
+
+This fork integrates [implot3d](https://github.com/brenocq/implot3d), see [csdn dearpygui](https://iridescent.blog.csdn.net/article/details/149784873) for tutorial and demo.
+
 - **Modern look** — Complete theme and style control
 - **Great performance** —  GPU-based rendering and efficient C/C++ code
 - **Stable operation** —  Asynchronous function support
