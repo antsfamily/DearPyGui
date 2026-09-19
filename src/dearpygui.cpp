@@ -184,7 +184,10 @@ GetModuleConstants()
 		ModuleConstants.push_back({ "mvYAxis", ImAxis_Y1});
 		ModuleConstants.push_back({ "mvYAxis2", ImAxis_Y2});
 		ModuleConstants.push_back({ "mvYAxis3", ImAxis_Y3});
-    
+    	ModuleConstants.push_back({ "mvXAxis3D", ImAxis3D_X});
+		ModuleConstants.push_back({ "mvYAxis3D", ImAxis3D_Y});
+		ModuleConstants.push_back({ "mvZAxis3D", ImAxis3D_Z});
+
 		ModuleConstants.push_back({ "mvPlotScale_Linear", ImPlotScale_Linear});  // default linear scale
 		ModuleConstants.push_back({ "mvPlotScale_Time", ImPlotScale_Time});  // date/time scale
 		ModuleConstants.push_back({ "mvPlotScale_Log10", ImPlotScale_Log10});  // base 10 logartithmic scale
@@ -731,6 +734,7 @@ PyInit__dearpygui(void)
 	MV_ADD_COMMAND(reorder_items);
 	MV_ADD_COMMAND(show_imgui_demo);
 	MV_ADD_COMMAND(show_implot_demo);
+	MV_ADD_COMMAND(show_implot3d_demo);
 	MV_ADD_COMMAND(show_item_debug);
 	MV_ADD_COMMAND(get_item_info);
 	MV_ADD_COMMAND(set_item_alias);

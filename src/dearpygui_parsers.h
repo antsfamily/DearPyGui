@@ -1050,6 +1050,17 @@ InsertParser_Block2(std::map<std::string, mvPythonParser>& parsers)
 
 	{
 		std::vector<mvPythonDataElement> args;
+
+		mvPythonParserSetup setup;
+		setup.about = "Shows the implot3d demo.";
+		setup.category = { "Item Registry" };
+
+		mvPythonParser parser = FinalizeParser(setup, args);
+		parsers.insert({ "show_implot3d_demo", parser });
+	}
+
+	{
+		std::vector<mvPythonDataElement> args;
 		args.reserve(3);
 		args.push_back({ mvPyDataType::UUID, "container" });
 		args.push_back({ mvPyDataType::Integer, "slot" });
@@ -1289,7 +1300,7 @@ InsertParser_Block2(std::map<std::string, mvPythonParser>& parsers)
 	{
 		std::vector<mvPythonDataElement> args;
 		args.push_back({ mvPyDataType::UUID, "window" });
-		args.push_back({ mvPyDataType::Bool, "value", mvArgType::POSITIONAL_ARG, "True", "True to select this window as primary, False to make it a regular window (without any primary window). Only one window at a time can be primary." });
+		args.push_back({ mvPyDataType::Bool, "value" });
 
 		mvPythonParserSetup setup;
 		setup.about = "Sets the primary window.";

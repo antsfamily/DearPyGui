@@ -71,7 +71,7 @@ class DPGBuildCommand(distutils.cmd.Command):
         command.append('cmake .. -G "Visual Studio 17 2022" -A "x64" -DMVDIST_ONLY=True -DMVDPG_VERSION=')
         command.append(version_number() + " -DMV_PY_VERSION=")
         command.append(str(sys.version_info[0]) + "." + str(sys.version_info[1]) + " && ")
-        command.append("cd .. && cmake --build cmake-build-local --config Release")
+        command.append("cd .. && cmake --build cmake-build-local --config Release -- -j$(nproc)")
         self.announce('Running command: %s' % "Dear PyGui Build for Windows", level=distutils.log.INFO)
         subprocess.check_call(''.join(command), env=os.environ, shell=True)
         src_path = os.path.dirname(os.path.abspath(__file__))
@@ -81,7 +81,7 @@ class DPGBuildCommand(distutils.cmd.Command):
         command = ["mkdir cmake-build-local; "]
         command.append("cd cmake-build-local; ")
         command.append('cmake .. -DMVDIST_ONLY=True -DMVDPG_VERSION='+version_number()+ " -DMV_PY_VERSION="+ str(sys.version_info[0]) + "." + str(sys.version_info[1])+"; ")
-        command.append("cd ..; cmake --build cmake-build-local --config Release")
+        command.append("cd ..; cmake --build cmake-build-local --config Release -- -j$(nproc)")
         self.announce('Running command: %s' % "Dear PyGui Build for Linux",level=distutils.log.INFO)
         subprocess.check_call(''.join(command), shell=True)
         src_path = os.path.dirname(os.path.abspath(__file__))
@@ -91,7 +91,7 @@ class DPGBuildCommand(distutils.cmd.Command):
         command = ["mkdir cmake-build-local; "]
         command.append("cd cmake-build-local; ")
         command.append('cmake .. -DMVDIST_ONLY=True -DMVDPG_VERSION='+version_number()+ " -DMV_PY_VERSION="+ str(sys.version_info[0]) + "." + str(sys.version_info[1])+"; ")
-        command.append("cd ..; cmake --build cmake-build-local --config Release")
+        command.append("cd ..; cmake --build cmake-build-local --config Release -- -j$(nproc)")
         self.announce('Running command: %s' % "Dear PyGui Build for OS X",level=distutils.log.INFO)
         subprocess.check_call(''.join(command), shell=True)
         src_path = os.path.dirname(os.path.abspath(__file__))
@@ -161,14 +161,14 @@ def setup_package():
             shutil.copy(src_path + "/thirdparty/Microsoft/vcruntime140_1.dll", src_path + "/output/dearpygui")
 
     metadata = dict(
-        name='dearpygui',                                      # Required
-        version=version_number(),                              # Required
-        author="Jonathan Hoffstadt and Preston Cothren",       # Optional
-        author_email="jonathanhoffstadt@yahoo.com",            # Optional
-        description='DearPyGui: A simple Python GUI Toolkit',  # Required
+        name='dearpygui-implot3d',                                      # Required
+        version=version_number()+'.0.4',                              # Required
+        author="Zhi Liu",       # Optional
+        author_email="zhiliu.mind@gmail.com",            # Optional
+        description='Fork of DearPyGui with built-in ImPlot3D, NOT official DearPyGui',  # Required
         long_description=long_description,                     # Optional
         long_description_content_type='text/markdown',         # Optional
-        url='https://github.com/hoffstadt/DearPyGui',          # Optional
+        url='https://github.com/antsfamily/DearPyGui',          # Optional
         license = 'MIT',
         python_requires='>=3.8',
         classifiers=[

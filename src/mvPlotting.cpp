@@ -669,6 +669,8 @@ DearPyGui::draw_plot(ImDrawList* drawlist, mvAppItem& item, mvPlotConfig& config
 		child->draw(nullptr, ImGui::GetCursorPosX(), ImGui::GetCursorPosY());
 }
 
+
+
 void
 DearPyGui::draw_plot_axis(ImDrawList* drawlist, mvAppItem& item, mvPlotAxisConfig& config)
 {
@@ -1169,6 +1171,7 @@ DearPyGui::draw_scatter_series(ImDrawList* drawlist, mvAppItem& item, const mvSc
 	// handle popping themes
 	cleanup_local_theming(&item);
 }
+
 
 void
 DearPyGui::draw_stair_series(ImDrawList* drawlist, mvAppItem& item, const mvStairSeriesConfig& config)
@@ -2433,6 +2436,7 @@ DearPyGui::set_positional_configuration(PyObject* inDict, mvScatterSeriesConfig&
 		(*outConfig.value)[i] = ToDoubleVect(PyTuple_GetItem(inDict, i));
 }
 
+
 void
 DearPyGui::set_positional_configuration(PyObject* inDict, mvErrorSeriesConfig& outConfig)
 {
@@ -2913,6 +2917,7 @@ DearPyGui::set_configuration(PyObject* inDict, mvScatterSeriesConfig& outConfig)
 	flagop("no_clip", ImPlotScatterFlags_NoClip, outConfig.flags);
 }
 
+
 void
 DearPyGui::set_configuration(PyObject* inDict, mv2dHistogramSeriesConfig& outConfig)
 {
@@ -3232,6 +3237,7 @@ DearPyGui::set_configuration(PyObject* inDict, mvSubPlotsConfig& outConfig)
 }
 
 void
+
 DearPyGui::set_configuration(PyObject* inDict, mvPlotAxisConfig& outConfig, mvAppItem& item)
 {
 	if (inDict == nullptr)
@@ -3854,6 +3860,7 @@ DearPyGui::fill_configuration_dict(const mvPlotAxisConfig& inConfig, PyObject* o
 	checkbitset("lock_min", ImPlotAxisFlags_LockMin, inConfig.flags);
 	checkbitset("lock_max", ImPlotAxisFlags_LockMax, inConfig.flags);
 }
+
 
 //-----------------------------------------------------------------------------
 // Old Classes, in the process of removing OOP crap

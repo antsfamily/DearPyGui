@@ -512,7 +512,9 @@ RenderItemRegistry(mvItemRegistry& registry)
         ImGui::ShowDemoWindow(&registry.showImGuiDebug);
     if(registry.showImPlotDebug)
         ImPlot::ShowDemoWindow(&registry.showImPlotDebug);
-
+    if(registry.showImPlot3dDebug)
+        ImPlot3D::ShowDemoWindow(&registry.showImPlot3dDebug);
+        
     for (auto& root : registry.fontRegistryRoots)
     {
         if (root->config.show)

@@ -50,6 +50,7 @@ jobs:
       run: |
         git submodule update --init --recursive ./thirdparty/imgui
         git submodule update --init --recursive ./thirdparty/implot
+        git submodule update --init --recursive ./thirdparty/implot3d
         git submodule update --init --recursive ./thirdparty/freetype
 
     - name: Mark Versions
@@ -93,6 +94,7 @@ jobs:
         run: |
           git submodule update --init --recursive ./thirdparty/imgui
           git submodule update --init --recursive ./thirdparty/implot
+          git submodule update --init --recursive ./thirdparty/implot3d
           git submodule update --init --recursive ./thirdparty/glfw
 
       - name: Mark Versions
@@ -136,6 +138,7 @@ jobs:
       run: |
         git submodule update --init --recursive ./thirdparty/imgui
         git submodule update --init --recursive ./thirdparty/implot
+        git submodule update --init --recursive ./thirdparty/implot3d
         git submodule update --init --recursive ./thirdparty/glfw
         sudo apt-get update
         sudo apt-get install libglu1-mesa-dev libgl1-mesa-dev xorg-dev libxrandr-dev -y
@@ -181,6 +184,7 @@ jobs:
       run: |
         git submodule update --init --recursive ./thirdparty/imgui
         git submodule update --init --recursive ./thirdparty/implot
+        git submodule update --init --recursive ./thirdparty/implot3d
         git submodule update --init --recursive ./thirdparty/glfw
         sudo apt-get update
         sudo apt-get install libglu1-mesa-dev libgl1-mesa-dev xorg-dev libxrandr-dev -y

@@ -11,7 +11,9 @@
 #include "mvItemHandlers.h"
 
 #include <implot.h>
+#include <implot3d.h>
 #include <implot_internal.h>
+#include <implot3d_internal.h>
 #include <misc/cpp/imgui_stdlib.h>
 
 void mvDatePicker::draw(ImDrawList* drawlist, float x, float y)

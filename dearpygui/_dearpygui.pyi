@@ -435,12 +435,20 @@ def add_plot(*, label: str ='', user_data: Any ='', use_internal_label: bool =''
 	"""Adds a plot which is used to hold series, and can be drawn to with draw commands. For all _mod parameters use mvKey_ModX enums, or mvKey_ModDisabled to disable the modifier."""
 	...
 
+def add_plot3d(*, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', width: int ='', height: int ='', indent: int ='', parent: Union[int, str] ='', before: Union[int, str] ='', payload_type: str ='', callback: Callable ='', drag_callback: Callable ='', drop_callback: Callable ='', show: bool ='', pos: Union[List[int], Tuple[int, ...]] ='', filter_key: str ='', tracked: bool ='', track_offset: float ='', no_title: bool ='', no_menus: bool ='', no_box_select: bool ='', no_mouse_pos: bool ='', query: bool ='', query_color: Union[List[float], Tuple[float, ...]] ='', min_query_rects: int ='', max_query_rects: int ='', crosshairs: bool ='', equal_aspects: bool ='', no_inputs: bool ='', no_frame: bool ='', use_local_time: bool ='', use_ISO8601: bool ='', use_24hour_clock: bool ='', pan_button: int ='', pan_mod: int ='', context_menu_button: int ='', fit_button: int ='', box_select_button: int ='', box_select_mod: int ='', box_select_cancel_button: int ='', query_toggle_mod: int ='', horizontal_mod: int ='', vertical_mod: int ='', override_mod: int ='', zoom_mod: int ='', zoom_rate: int ='') -> Union[int, str]:
+	"""Adds a 3d plot which is used to hold series, and can be drawn to with draw commands. For all _mod parameters use mvKey_ModX enums, or mvKey_ModDisabled to disable the modifier."""
+	...
+ 
 def add_plot_annotation(*, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', parent: Union[int, str] ='', before: Union[int, str] ='', source: Union[int, str] ='', show: bool ='', default_value: Any ='', offset: Union[List[float], Tuple[float, ...]] ='', color: Union[List[int], Tuple[int, ...]] ='', clamped: bool ='') -> Union[int, str]:
 	"""Adds an annotation to a plot."""
 	...
 
 def add_plot_axis(axis : int, *, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', parent: Union[int, str] ='', payload_type: str ='', drop_callback: Callable ='', show: bool ='', no_label: bool ='', no_gridlines: bool ='', no_tick_marks: bool ='', no_tick_labels: bool ='', no_initial_fit: bool ='', no_menus: bool ='', no_side_switch: bool ='', no_highlight: bool ='', opposite: bool ='', foreground_grid: bool ='', tick_format: str ='', scale: int ='', invert: bool ='', auto_fit: bool ='', range_fit: bool ='', pan_stretch: bool ='', lock_min: bool ='', lock_max: bool ='') -> Union[int, str]:
 	"""Adds an axis to a plot."""
+	...
+
+def add_plot3d_axis(axis : int, *, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', parent: Union[int, str] ='', payload_type: str ='', drop_callback: Callable ='', show: bool ='', no_label: bool ='', no_gridlines: bool ='', no_tick_marks: bool ='', no_tick_labels: bool ='', no_initial_fit: bool ='', no_menus: bool ='', no_side_switch: bool ='', no_highlight: bool ='', opposite: bool ='', foreground_grid: bool ='', tick_format: str ='', scale: int ='', invert: bool ='', auto_fit: bool ='', range_fit: bool ='', pan_stretch: bool ='', lock_min: bool ='', lock_max: bool ='') -> Union[int, str]:
+	"""Adds an axis to a 3D plot."""
 	...
 
 def add_plot_legend(*, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', parent: Union[int, str] ='', payload_type: str ='', drop_callback: Callable ='', show: bool ='', location: int ='', horizontal: bool ='', sort: bool ='', outside: bool ='', no_highlight_item: bool ='', no_highlight_axis: bool ='', no_menus: bool ='', no_buttons: bool ='') -> Union[int, str]:
@@ -463,6 +471,9 @@ def add_scatter_series(x : Union[List[float], Tuple[float, ...]], y : Union[List
 	"""Adds a scatter series to a plot."""
 	...
 
+def add_scatter3d_series(x : Union[List[float], Tuple[float, ...]], y : Union[List[float], Tuple[float, ...]], z : Union[List[float], Tuple[float, ...]], *, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', parent: Union[int, str] ='', before: Union[int, str] ='', source: Union[int, str] ='', show: bool ='', marker: str ='', size: Union[List[float], Tuple[float, ...]] ='', color: Union[List[Union[List[int], Tuple[int, ...]]], Tuple[Union[List[int], Tuple[int, ...]], ...]] ='', pkcolor: Union[List[int], Tuple[int, ...]] ='', filla: float ='', stride: int='', no_clip: bool ='') -> Union[int, str]:
+	"""Adds a 3d scatter series to a plot."""
+	...
 def add_selectable(*, label: str ='', user_data: Any ='', use_internal_label: bool ='', tag: Union[int, str] ='', width: int ='', height: int ='', indent: int ='', parent: Union[int, str] ='', before: Union[int, str] ='', source: Union[int, str] ='', payload_type: str ='', callback: Callable ='', drag_callback: Callable ='', drop_callback: Callable ='', show: bool ='', enabled: bool ='', pos: Union[List[int], Tuple[int, ...]] ='', filter_key: str ='', tracked: bool ='', track_offset: float ='', default_value: bool ='', span_columns: bool ='', disable_popup_close: bool ='', select_on_nav: bool ='') -> Union[int, str]:
 	"""Adds a selectable. Similar to a button but can indicate its selected state."""
 	...
@@ -1159,7 +1170,7 @@ def set_item_children(item : Union[int, str], source : Union[int, str], slot : i
 	"""Sets an item's children."""
 	...
 
-def set_primary_window(window : Union[int, str], value : bool ='') -> None:
+def set_primary_window(window : Union[int, str], value : bool) -> None:
 	"""Sets the primary window."""
 	...
 
@@ -1195,6 +1206,9 @@ def show_implot_demo() -> None:
 	"""Shows the implot demo."""
 	...
 
+def show_implot3d_demo() -> None:
+	"""Shows the implot3d demo."""
+	...
 def show_item_debug(item : Union[int, str]) -> None:
 	"""Shows an item's debug window"""
 	...
@@ -1516,6 +1530,9 @@ mvXAxis3=0
 mvYAxis=0
 mvYAxis2=0
 mvYAxis3=0
+mvXAxis3D=0
+mvYAxis3D=0
+mvZAxis3D=0
 mvPlotScale_Linear=0
 mvPlotScale_Time=0
 mvPlotScale_Log10=0
@@ -1783,6 +1800,7 @@ mvListbox=0
 mvText=0
 mvCombo=0
 mvPlot=0
+mvPlot3D=0
 mvSimplePlot=0
 mvDrawlist=0
 mvWindowAppItem=0
@@ -1831,6 +1849,7 @@ mvAnnotation=0
 mvAxisTag=0
 mvLineSeries=0
 mvScatterSeries=0
+mvScatter3DSeries=0
 mvStemSeries=0
 mvStairSeries=0
 mvBarSeries=0
@@ -1861,6 +1880,7 @@ mvViewportDrawlist=0
 mvFileExtension=0
 mvPlotLegend=0
 mvPlotAxis=0
+mvPlot3DAxis=0
 mvHandlerRegistry=0
 mvKeyDownHandler=0
 mvKeyPressHandler=0

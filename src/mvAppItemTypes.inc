@@ -31,6 +31,7 @@
     X( mvText ) \
     X( mvCombo ) \
     X( mvPlot ) \
+    X( mvPlot3D ) \
     X( mvSimplePlot ) \
     X( mvDrawlist ) \
     X( mvWindowAppItem ) \
@@ -79,6 +80,7 @@
     X( mvAxisTag ) \
     X( mvLineSeries ) \
     X( mvScatterSeries ) \
+    X( mvScatter3DSeries ) \
     X( mvStemSeries ) \
     X( mvStairSeries ) \
     X( mvBarSeries ) \
@@ -109,6 +111,7 @@
     X( mvFileExtension ) \
     X( mvPlotLegend ) \
     X( mvPlotAxis ) \
+    X( mvPlot3DAxis ) \
     X( mvHandlerRegistry ) \
     X( mvKeyDownHandler ) \
     X( mvKeyPressHandler ) \

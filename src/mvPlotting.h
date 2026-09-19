@@ -4,6 +4,7 @@
 #include <array>
 #include <implot_internal.h>
 
+
 struct mvPlotConfig;
 struct mvPlotAxisConfig;
 struct mvAnnotationConfig;
@@ -437,6 +438,7 @@ struct mvPlotConfig
     bool                                        clock24Hour = false;
 };
 
+
 //-----------------------------------------------------------------------------
 // Old Classes, in the process of removing OOP crap
 //-----------------------------------------------------------------------------
@@ -582,6 +584,7 @@ public:
     PyObject* getPyValue() override { return ToPyList(*configData.value); }
     void setPyValue(PyObject* value) override { *configData.value = ToVectVectDouble(value); }
 };
+
 
 class mvShadeSeries : public mvAppItem
 {
@@ -832,6 +835,7 @@ public:
     void getSpecificConfiguration(PyObject* dict) override { DearPyGui::fill_configuration_dict(configData, dict); }
 };
 
+
 class mvPlot : public mvAppItem
 {
 public:
@@ -841,3 +845,5 @@ public:
     void handleSpecificKeywordArgs(PyObject* dict) override { DearPyGui::set_configuration(dict, configData); }
     void getSpecificConfiguration(PyObject* dict) override { DearPyGui::fill_configuration_dict(configData, dict); }
 };
+
+

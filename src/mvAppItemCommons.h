@@ -12,6 +12,7 @@
 #include "mvFontItems.h"
 #include "mvColors.h"
 #include "mvPlotting.h"
+#include "mvPlotting3D.h"
 #include "mvContainers.h"
 #include "mvTimePicker.h"
 #include "mvDatePicker.h"

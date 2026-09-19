@@ -233,7 +233,7 @@ set_x_scroll(PyObject* self, PyObject* args, PyObject* kwargs)
 	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_x_scroll",
-			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable, mvListbox", window);
+			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable", window);
 		return nullptr;
 	}
 
@@ -272,7 +272,7 @@ set_y_scroll(PyObject* self, PyObject* args, PyObject* kwargs)
 	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_y_scroll",
-			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable, mvListbox", window);
+			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable", window);
 		return nullptr;
 	}
 
@@ -308,7 +308,7 @@ get_x_scroll(PyObject* self, PyObject* args, PyObject* kwargs)
 	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "get_x_scroll",
-			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable, mvListbox", window);
+			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable", window);
 		return nullptr;
 	}
 
@@ -344,7 +344,7 @@ get_y_scroll(PyObject* self, PyObject* args, PyObject* kwargs)
 	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "get_y_scroll",
-			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable, mvListbox", window);
+			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable", window);
 		return nullptr;
 	}
 
@@ -380,7 +380,7 @@ get_x_scroll_max(PyObject* self, PyObject* args, PyObject* kwargs)
 	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "get_x_scroll_max",
-			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable, mvListbox", window);
+			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable", window);
 		return nullptr;
 	}
 
@@ -416,7 +416,7 @@ get_y_scroll_max(PyObject* self, PyObject* args, PyObject* kwargs)
 	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "get_y_scroll_max",
-			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable, mvListbox", window);
+			"Incompatible type. Expected types include: mvWindowAppItem, mvChildWindow, mvTable", window);
 		return nullptr;
 	}
 
@@ -989,32 +989,44 @@ set_axis_ticks(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
-	{
-		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_axis_ticks",
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
-		return nullptr;
-	}
-
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-
 	std::vector<std::string> labels;
 	std::vector<double> locations;
-
 	for (const auto& item : mlabel_pairs)
 	{
 		labels.emplace_back(item.first.c_str());
 		locations.emplace_back((double)item.second);
 	}
-
-	graph->configData.labels.clear();
-	graph->configData.clabels.clear();
-	graph->configData.labelLocations.clear();
-	graph->configData.labels = labels;
-	graph->configData.labelLocations = locations;
-
-	for (const auto& item : graph->configData.labels)
-		graph->configData.clabels.push_back(item.data());
+	
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.labels.clear();
+		graph->configData.clabels.clear();
+		graph->configData.labelLocations.clear();
+		graph->configData.labels = labels;
+		graph->configData.labelLocations = locations;
+	
+		for (const auto& item : graph->configData.labels)
+			graph->configData.clabels.push_back(item.data());
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.labels.clear();
+		graph->configData.clabels.clear();
+		graph->configData.labelLocations.clear();
+		graph->configData.labels = labels;
+		graph->configData.labelLocations = locations;
+	
+		for (const auto& item : graph->configData.labels)
+			graph->configData.clabels.push_back(item.data());
+	}
+	else
+	{
+		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_axis_ticks",
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
+		return nullptr;
+	}
 
 	return GetPyNone();
 }
@@ -1042,16 +1054,25 @@ set_axis_limits_constraints(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.setLimitsRange = true;
+		graph->configData.constraints_range = ImVec2(vmin, vmax);
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.setLimitsRange = true;
+		graph->configData.constraints_range = ImVec2(vmin, vmax);
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, tag,
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
 
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-	graph->configData.setLimitsRange = true;
-	graph->configData.constraints_range = ImVec2(vmin, vmax);
 	return GetPyNone();
 }
 
@@ -1076,15 +1097,23 @@ reset_axis_limits_constraints(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.setLimitsRange = false;
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.setLimitsRange = false;
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, tag,
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
 
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-	graph->configData.setLimitsRange = false;
 	return GetPyNone();
 }
 
@@ -1111,16 +1140,25 @@ set_axis_zoom_constraints(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.setZoomRange = true;
+		graph->configData.zoom_range = ImVec2(vmin, vmax);
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.setZoomRange = true;
+		graph->configData.zoom_range = ImVec2(vmin, vmax);
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, tag,
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
 
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-	graph->configData.setZoomRange = true;
-	graph->configData.zoom_range = ImVec2(vmin, vmax);
 	return GetPyNone();
 }
 
@@ -1146,15 +1184,22 @@ reset_axis_zoom_constraints(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.setZoomRange = false;
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.setZoomRange = false;
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, tag,
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
-
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-	graph->configData.setZoomRange = false;
 
 	return GetPyNone();
 }
@@ -1181,16 +1226,25 @@ set_axis_limits(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.setLimits = true;
+		graph->configData.limits = ImVec2(ymin, ymax);
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.setLimits = true;
+		graph->configData.limits = ImVec2(ymin, ymax);
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_axis_limits",
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
 
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-	graph->configData.setLimits = true;
-	graph->configData.limits = ImVec2(ymin, ymax);
 	return GetPyNone();
 }
 
@@ -1209,21 +1263,28 @@ set_axis_limits_auto(PyObject* self, PyObject* args, PyObject* kwargs)
 	auto aplot = GetItem(*GContext->itemRegistry, axis);
 	if (aplot == nullptr)
 	{
-		mvThrowPythonError(mvErrorCode::mvItemNotFound, "set_axis_limits",
+		mvThrowPythonError(mvErrorCode::mvItemNotFound, "set_axis_limits_auto",
 			"Item not found: " + std::to_string(axis), nullptr);
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
 	{
-		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_axis_limits",
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		graph->configData.setLimits = false;
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		graph->configData.setLimits = false;
+	}
+	else
+	{
+		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "set_axis_limits_auto",
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
-
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-
-	graph->configData.setLimits = false;
 
 	return GetPyNone();
 }
@@ -1248,18 +1309,29 @@ fit_axis_data(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+
+		// fit axis data
+		static_cast<mvPlot*>(graph->info.parentPtr)->configData._fitDirty = true;
+		static_cast<mvPlot*>(graph->info.parentPtr)->configData._axisfitDirty[graph->configData.axis] = true;
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+
+		// fit axis data
+		static_cast<mvPlot3D*>(graph->info.parentPtr)->configData._fitDirty = true;
+		static_cast<mvPlot3D*>(graph->info.parentPtr)->configData._axisfitDirty[graph->configData.axis] = true;
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "fit_axis_data",
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
-
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-
-	// fit axis data
-	static_cast<mvPlot*>(graph->info.parentPtr)->configData._fitDirty = true;
-	static_cast<mvPlot*>(graph->info.parentPtr)->configData._axisfitDirty[graph->configData.axis] = true;
 
 	return GetPyNone();
 }
@@ -1284,17 +1356,25 @@ get_axis_limits(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+		const ImVec2& lim = graph->configData.limits_actual;
+		return ToPyPair(lim.x, lim.y);
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+		const ImVec2& lim = graph->configData.limits_actual;
+		return ToPyPair(lim.x, lim.y);
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "get_axis_limits",
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
 
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-
-	const ImVec2& lim = graph->configData.limits_actual;
-	return ToPyPair(lim.x, lim.y);
 }
 
 static PyObject*
@@ -1317,18 +1397,29 @@ reset_axis_ticks(PyObject* self, PyObject* args, PyObject* kwargs)
 		return nullptr;
 	}
 
-	if (aplot->type != mvAppItemType::mvPlotAxis)
+	if (aplot->type == mvAppItemType::mvPlotAxis)
+	{
+		mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
+
+		graph->configData.labels.clear();
+		graph->configData.clabels.clear();
+		graph->configData.labelLocations.clear();
+	}
+	else if (aplot->type == mvAppItemType::mvPlot3DAxis)
+	{
+		mvPlot3DAxis* graph = static_cast<mvPlot3DAxis*>(aplot);
+
+		graph->configData.labels.clear();
+		graph->configData.clabels.clear();
+		graph->configData.labelLocations.clear();
+	}
+	else
 	{
 		mvThrowPythonError(mvErrorCode::mvIncompatibleType, "reset_axis_ticks",
-			"Incompatible type. Expected types include: mvPlotAxis", aplot);
+			"Incompatible type. Expected types include: mvPlotAxis, mvPlot3DAxis", aplot);
 		return nullptr;
 	}
 
-	mvPlotAxis* graph = static_cast<mvPlotAxis*>(aplot);
-
-	graph->configData.labels.clear();
-	graph->configData.clabels.clear();
-	graph->configData.labelLocations.clear();
 
 	return GetPyNone();
 }
@@ -2567,6 +2658,7 @@ create_context(PyObject* self, PyObject* args, PyObject* kwargs)
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImPlot::CreateContext();
+		ImPlot3D::CreateContext();
 		ImNodes::CreateContext();
 
 		// Configure some defaults that are common across platforms
@@ -2627,6 +2719,7 @@ destroy_context(PyObject* self, PyObject* args, PyObject* kwargs)
 
 			ImNodes::DestroyContext();
 			ImPlot::DestroyContext();
+			ImPlot3D::DestroyContext();
 			ImGui::DestroyContext();
 
 			#define X(el) DearPyGui::GetClassThemeComponent(mvAppItemType::el) = nullptr; DearPyGui::GetDisabledClassThemeComponent(mvAppItemType::el) = nullptr;
@@ -3015,7 +3108,7 @@ static PyObject*
 set_primary_window(PyObject* self, PyObject* args, PyObject* kwargs)
 {
 	PyObject* itemraw;
-	i32 value = 1;
+	i32 value;
 
 	if (!VerifyRequiredArguments(GetParsers()["set_primary_window"], args))
 		return GetPyNoneOrError();
@@ -3027,60 +3120,73 @@ set_primary_window(PyObject* self, PyObject* args, PyObject* kwargs)
 
 	mvUUID item = GetIDFromPyObject(itemraw);
 
-	mvWindowAppItem* window = GetWindow(*GContext->itemRegistry, item);
-
-	if (!window)
 	{
-		mvThrowPythonError(mvErrorCode::mvItemNotFound, "set_primary_window",
-			"Item not found: " + std::to_string(item), nullptr);
-		assert(false);
-		return nullptr;
-	}
+		mvWindowAppItem* window = GetWindow(*GContext->itemRegistry, item);
 
-	if (window->configData.mainWindow == (bool)value)
-		// Nothing to do!
-		return GetPyNone();
-
-	// Now, we either demote this (primary) window back to a regular window, or demote
-	// another window and set this one to be the new primary.  The `value` shows us
-	// the direction.
-	mvWindowAppItem* old_primary = nullptr;
-
-	if (value)
-	{
-		// Find old primary, if any.  Also re-focus all windows except the current one
-		// so that they float atop of the primary window (otherwise they'd stay hidden
-		// behind it).  Unfortunately ImGui does not have better means for controlling z-order.
-		for (auto& root : GContext->itemRegistry->windowRoots)
+		if (!window)
 		{
-			mvWindowAppItem* cur_window = static_cast<mvWindowAppItem*>(root.get());
-			if (cur_window->configData.mainWindow)
-				old_primary = cur_window;
-			
-			cur_window->info.focusNextFrame = (cur_window->uuid != item);
+			mvThrowPythonError(mvErrorCode::mvItemNotFound, "set_primary_window",
+				"Item not found: " + std::to_string(item), nullptr);
+			assert(false);
+			return nullptr;
 		}
+		else
+		{
+			if (window->configData.mainWindow == (bool)value)
+				return GetPyNone();
+			else
+			{
+				window->configData.mainWindow = value;
+				if (value)
+				{
+					window->configData._oldWindowflags = window->configData.windowflags;
+					window->configData.windowflags = ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoSavedSettings
+						| ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar;
 
-		// Select the window passed in as a primary
-		window->configData.mainWindow = true;
-		window->configData._oldxpos = window->state.pos.x;
-		window->configData._oldypos = window->state.pos.y;
-		window->configData._oldWidth = window->config.width;
-		window->configData._oldHeight = window->config.height;
+					if (window->configData._oldWindowflags & ImGuiWindowFlags_MenuBar)
+						window->configData.windowflags |= ImGuiWindowFlags_MenuBar;
+					window->configData._oldxpos = window->state.pos.x;
+					window->configData._oldypos = window->state.pos.y;
+					window->configData._oldWidth = window->config.width;
+					window->configData._oldHeight = window->config.height;
+				}
+				else
+				{
+					window->info.focusNextFrame = true;
+					if (window->configData.windowflags & ImGuiWindowFlags_MenuBar)
+						window->configData._oldWindowflags |= ImGuiWindowFlags_MenuBar;
+					window->configData.windowflags = window->configData._oldWindowflags;
+					if (window->configData.windowflags & ImGuiWindowFlags_MenuBar)
+						window->configData.windowflags |= ImGuiWindowFlags_MenuBar;
+					window->state.pos = { window->configData._oldxpos , window->configData._oldypos };
+					window->config.width = window->configData._oldWidth;
+					window->config.height = window->configData._oldHeight;
+					window->info.dirtyPos = true;
+					window->info.dirty_size = true;
+				}
+			}
+		}
 	}
-	else
-		// Just demote this window, nothing special
-		old_primary = window;
 
-	// Now whatever old primary was there (it might be the window passed in -
-	// if `value` is False), we want to make it a regular window.
-	if (old_primary)
+	// reset other windows
+	for (auto& window : GContext->itemRegistry->windowRoots)
 	{
-		old_primary->configData.mainWindow = false;
-		old_primary->state.pos = { old_primary->configData._oldxpos , old_primary->configData._oldypos };
-		old_primary->config.width = old_primary->configData._oldWidth;
-		old_primary->config.height = old_primary->configData._oldHeight;
-		old_primary->info.dirtyPos = true;
-		old_primary->info.dirty_size = true;
+		if (window->uuid != item)
+		{
+			mvWindowAppItem* windowActual = static_cast<mvWindowAppItem*>(window.get());
+			windowActual->configData.mainWindow = false;
+			window->info.focusNextFrame = true;
+			if (windowActual->configData.windowflags & ImGuiWindowFlags_MenuBar)
+				windowActual->configData._oldWindowflags |= ImGuiWindowFlags_MenuBar;
+			windowActual->configData.windowflags = windowActual->configData._oldWindowflags;
+			if (windowActual->configData.windowflags & ImGuiWindowFlags_MenuBar)
+				windowActual->configData.windowflags |= ImGuiWindowFlags_MenuBar;
+			window->state.pos = { windowActual->configData._oldxpos , windowActual->configData._oldypos };
+			window->config.width = windowActual->configData._oldWidth;
+			window->config.height = windowActual->configData._oldHeight;
+			window->info.dirtyPos = true;
+			window->info.dirty_size = true;
+		}
 	}
 
 	return GetPyNone();
@@ -3389,6 +3495,16 @@ show_implot_demo(PyObject* self, PyObject* args, PyObject* kwargs)
 }
 
 static PyObject*
+show_implot3d_demo(PyObject* self, PyObject* args, PyObject* kwargs)
+{
+
+	mvPySafeLockGuard lk(GContext->mutex);
+
+	GContext->itemRegistry->showImPlot3dDebug = true;
+	return GetPyNone();
+}
+
+static PyObject*
 get_windows(PyObject* self, PyObject* args, PyObject* kwargs)
 {
 
@@ -3617,7 +3733,6 @@ get_item_info(PyObject* self, PyObject* args, PyObject* kwargs)
 	PyDict_SetItemString(pdict, "parent", mvPyObject(ToPyUUIDOrNone(appitem->info.parentPtr)));
 	PyDict_SetItemString(pdict, "theme", mvPyObject(ToPyUUIDOrNone(appitem->theme.get())));
 	PyDict_SetItemString(pdict, "font", mvPyObject(ToPyUUIDOrNone(appitem->font.get())));
-	PyDict_SetItemString(pdict, "handlers", mvPyObject(ToPyUUIDOrNone(appitem->handlerRegistry.get())));
 
 	if (DearPyGui::GetEntityDesciptionFlags(appitem->type) & MV_ITEM_DESC_CONTAINER)
 		PyDict_SetItemString(pdict, "container", mvPyObject(ToPyBool(true)));

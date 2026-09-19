@@ -127,8 +127,6 @@ std::vector<mvUUID> mvNodeEditor::getSelectedNodes() const
     {
         for (const auto& child : childslots[1])
         {
-            if (child->type != mvAppItemType::mvNode)
-                continue;
             int i1 = item;
             int i2 = static_cast<mvNode*>(child.get())->getId();
             //if (static_cast<mvNode*>(child.get())->getId() == item)
@@ -258,10 +256,6 @@ void mvNodeEditor::draw(ImDrawList* drawlist, float x, float y)
 
     for (auto& child : childslots[1])
     {
-        // skip non-node children (e.g. menu bars)
-        if (child->type != mvAppItemType::mvNode)
-            continue;
-
         child->state.lastFrameUpdate = GContext->frame;
         child->state.prevHovered = child->state.hovered;
         child->state.hovered = false;

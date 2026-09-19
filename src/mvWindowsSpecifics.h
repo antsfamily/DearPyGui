@@ -3,6 +3,7 @@
 #include "mvViewport.h"
 #include "mvFontManager.h"
 #include <implot.h>
+#include <implot3d.h>
 #include <imnodes.h>
 #include <cstdlib>
 #include <ctime>

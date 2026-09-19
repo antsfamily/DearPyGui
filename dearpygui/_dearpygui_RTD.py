@@ -2279,6 +2279,75 @@ def plot(**kwargs):
 	finally:
 		internal_dpg.pop_container_stack()
 
+
+@contextmanager
+def plot3d(**kwargs):
+	"""	 Adds a 3d plot which is used to hold series, and can be drawn to with draw commands. For all _mod parameters use mvKey_ModX enums, or mvKey_ModDisabled to disable the modifier.
+
+	Args:
+		label (str, optional): Overrides 'name' as label.
+		user_data (Any, optional): User data for callbacks
+		use_internal_label (bool, optional): Use generated internal label instead of user specified (appends ### uuid).
+		tag (Union[int, str], optional): Unique id used to programmatically refer to the item.If label is unused this will be the label.
+		width (int, optional): Width of the item.
+		height (int, optional): Height of the item.
+		indent (int, optional): Offsets the widget to the right the specified number multiplied by the indent style.
+		parent (Union[int, str], optional): Parent to add this item to. (runtime adding)
+		before (Union[int, str], optional): This item will be displayed before the specified item in the parent.
+		payload_type (str, optional): Sender string type must be the same as the target for the target to run the payload_callback.
+		callback (Callable, optional): Registers a callback.
+		drag_callback (Callable, optional): Registers a drag callback for drag and drop.
+		drop_callback (Callable, optional): Registers a drop callback for drag and drop.
+		show (bool, optional): Attempt to render widget.
+		pos (Union[List[int], Tuple[int, ...]], optional): Places the item relative to window coordinates, [0,0] is top left.
+		filter_key (str, optional): Used by filter widget.
+		tracked (bool, optional): Scroll tracking
+		track_offset (float, optional): 0.0f:top, 0.5f:center, 1.0f:bottom
+		no_title (bool, optional): the plot title will not be displayed
+		no_menus (bool, optional): the user will not be able to open context menus with right-click
+		no_box_select (bool, optional): the user will not be able to box-select with right-click drag
+		no_mouse_pos (bool, optional): the text of mouse position, in plot coordinates, will not be displayed inside of the plot
+		query (bool, optional): the user will be able to draw query rects with CTRL + right-click drag
+		query_color (Union[List[float], Tuple[float, ...]], optional): Color of the query rectangles.
+		min_query_rects (int, optional): The minimum number of query rects that can be in the plot. If there are less rects than this value, it won't be possible to delete them.
+		max_query_rects (int, optional): The maximum number of query rects that can be in the plot. If the number is reached any rect added will replace the latest one. (0 means unlimited)
+		crosshairs (bool, optional): the default mouse cursor will be replaced with a crosshair when hovered
+		equal_aspects (bool, optional): primary x and y axes will be constrained to have the same units/pixel (does not apply to auxiliary y-axes)
+		no_inputs (bool, optional): the user will not be able to interact with the plot
+		no_frame (bool, optional): the ImGui frame will not be rendered
+		use_local_time (bool, optional): axis labels will be formatted for your timezone when
+		use_ISO8601 (bool, optional): dates will be formatted according to ISO 8601 where applicable (e.g. YYYY-MM-DD, YYYY-MM, --MM-DD, etc.)
+		use_24hour_clock (bool, optional): times will be formatted using a 24 hour clock
+		pan_button (int, optional): mouse button that enables panning when held
+		pan_mod (int, optional): optional modifier that must be held for panning
+		context_menu_button (int, optional): opens context menus (if enabled) when clicked
+		fit_button (int, optional): fits visible data when double clicked
+		box_select_button (int, optional): begins box selection when pressed and confirms selection when released
+		box_select_mod (int, optional): begins box selection when pressed and confirms selection when released
+		box_select_cancel_button (int, optional): cancels active box selection when pressed
+		query_toggle_mod (int, optional): when held, active box selections turn into queries
+		horizontal_mod (int, optional): expands active box selection/query horizontally to plot edge when held
+		vertical_mod (int, optional): expands active box selection/query vertically to plot edge when held
+		override_mod (int, optional): when held, all input is ignored; used to enable axis/plots as DND sources
+		zoom_mod (int, optional): optional modifier that must be held for scroll wheel zooming
+		zoom_rate (int, optional): zoom rate for scroll (e.g. 0.1f = 10% plot range every scroll click); make negative to invert
+		id (Union[int, str], optional): (deprecated)
+		delay_search (bool, optional): (deprecated)This was used as an optimization hint but is not relevant anymore.
+		no_highlight (bool, optional): (deprecated)Removed because not supported from the backend anymore. To control the highlighting of series use the same argument in `add_plot_legend`
+		no_child (bool, optional): (deprecated)a child window region will not be used to capture mouse scroll (can boost performance for single ImGui window applications)
+		anti_aliased (bool, optional): (deprecated)This feature was deprecated in ImPlot. To enable/disable anti_aliasing use `dpg.configure_app()` with the `anti_aliasing` parameters.
+		query_button (int, optional): (deprecated)This refers to the old way of querying of ImPlot, now replaced with `DragRect()`
+		query_mod (int, optional): (deprecated)This refers to the old way of querying of ImPlot, now replaced with `DragRect()`
+	Yields:
+		Union[int, str]
+	"""
+	try:
+		widget = internal_dpg.add_plot3d(**kwargs)
+		internal_dpg.push_container_stack(widget)
+		yield widget
+	finally:
+		internal_dpg.pop_container_stack()
+  
 @contextmanager
 def plot_axis(axis, **kwargs):
 	"""	 Adds an axis to a plot.
@@ -2319,6 +2388,51 @@ def plot_axis(axis, **kwargs):
 	"""
 	try:
 		widget = internal_dpg.add_plot_axis(axis, **kwargs)
+		internal_dpg.push_container_stack(widget)
+		yield widget
+	finally:
+		internal_dpg.pop_container_stack()
+  
+@contextmanager
+def plot3d_axis(axis, **kwargs):
+	"""	 Adds an axis to a 3D plot.
+
+	Args:
+		axis (int): 
+		label (str, optional): Overrides 'name' as label.
+		user_data (Any, optional): User data for callbacks
+		use_internal_label (bool, optional): Use generated internal label instead of user specified (appends ### uuid).
+		tag (Union[int, str], optional): Unique id used to programmatically refer to the item.If label is unused this will be the label.
+		parent (Union[int, str], optional): Parent to add this item to. (runtime adding)
+		payload_type (str, optional): Sender string type must be the same as the target for the target to run the payload_callback.
+		drop_callback (Callable, optional): Registers a drop callback for drag and drop.
+		show (bool, optional): Attempt to render widget.
+		no_label (bool, optional): the axis label will not be displayed
+		no_gridlines (bool, optional): no grid lines will be displayed
+		no_tick_marks (bool, optional): no tick marks will be displayed
+		no_tick_labels (bool, optional): no text labels will be displayed
+		no_initial_fit (bool, optional): axis will not be initially fit to data extents on the first rendered frame
+		no_menus (bool, optional): the user will not be able to open context menus with right-click
+		no_side_switch (bool, optional): the user will not be able to switch the axis side by dragging it
+		no_highlight (bool, optional): the axis will not have its background highlighted when hovered or held
+		opposite (bool, optional): axis ticks and labels will be rendered on the conventionally opposite side (i.e, right or top)
+		foreground_grid (bool, optional): grid lines will be displayed in the foreground (i.e. on top of data) instead of the background
+		tick_format (str, optional): Sets a custom tick label formatter
+		scale (int, optional): Sets the axis' scale. Can have only mvPlotScale_ values
+		invert (bool, optional): the axis values will be inverted (i.e. growing from right to left)
+		auto_fit (bool, optional): axis will be auto-fitting to data extents
+		range_fit (bool, optional): axis will only fit points if the point is in the visible range of the **orthogonal** axis
+		pan_stretch (bool, optional): panning in a locked or constrained state will cause the axis to stretch if possible
+		lock_min (bool, optional): the axis minimum value will be locked when panning/zooming
+		lock_max (bool, optional): the axis maximum value will be locked when panning/zooming
+		id (Union[int, str], optional): (deprecated)
+		log_scale (bool, optional): (deprecated)Old way to set log scale in the axis. Use 'scale' argument instead.
+		time (bool, optional): (deprecated)Old way to set time scale in the axis. Use 'scale' argument instead.
+	Yields:
+		Union[int, str]
+	"""
+	try:
+		widget = internal_dpg.add_plot3d_axis(axis, **kwargs)
 		internal_dpg.push_container_stack(widget)
 		yield widget
 	finally:
@@ -5687,6 +5801,70 @@ def add_plot(**kwargs):
 
 	return internal_dpg.add_plot(**kwargs)
 
+
+def add_plot3d(**kwargs):
+	"""	 Adds a 3d plot which is used to hold series, and can be drawn to with draw commands. For all _mod parameters use mvKey_ModX enums, or mvKey_ModDisabled to disable the modifier.
+
+	Args:
+		label (str, optional): Overrides 'name' as label.
+		user_data (Any, optional): User data for callbacks
+		use_internal_label (bool, optional): Use generated internal label instead of user specified (appends ### uuid).
+		tag (Union[int, str], optional): Unique id used to programmatically refer to the item.If label is unused this will be the label.
+		width (int, optional): Width of the item.
+		height (int, optional): Height of the item.
+		indent (int, optional): Offsets the widget to the right the specified number multiplied by the indent style.
+		parent (Union[int, str], optional): Parent to add this item to. (runtime adding)
+		before (Union[int, str], optional): This item will be displayed before the specified item in the parent.
+		payload_type (str, optional): Sender string type must be the same as the target for the target to run the payload_callback.
+		callback (Callable, optional): Registers a callback.
+		drag_callback (Callable, optional): Registers a drag callback for drag and drop.
+		drop_callback (Callable, optional): Registers a drop callback for drag and drop.
+		show (bool, optional): Attempt to render widget.
+		pos (Union[List[int], Tuple[int, ...]], optional): Places the item relative to window coordinates, [0,0] is top left.
+		filter_key (str, optional): Used by filter widget.
+		tracked (bool, optional): Scroll tracking
+		track_offset (float, optional): 0.0f:top, 0.5f:center, 1.0f:bottom
+		no_title (bool, optional): the plot title will not be displayed
+		no_menus (bool, optional): the user will not be able to open context menus with right-click
+		no_box_select (bool, optional): the user will not be able to box-select with right-click drag
+		no_mouse_pos (bool, optional): the text of mouse position, in plot coordinates, will not be displayed inside of the plot
+		query (bool, optional): the user will be able to draw query rects with CTRL + right-click drag
+		query_color (Union[List[float], Tuple[float, ...]], optional): Color of the query rectangles.
+		min_query_rects (int, optional): The minimum number of query rects that can be in the plot. If there are less rects than this value, it won't be possible to delete them.
+		max_query_rects (int, optional): The maximum number of query rects that can be in the plot. If the number is reached any rect added will replace the latest one. (0 means unlimited)
+		crosshairs (bool, optional): the default mouse cursor will be replaced with a crosshair when hovered
+		equal_aspects (bool, optional): primary x and y axes will be constrained to have the same units/pixel (does not apply to auxiliary y-axes)
+		no_inputs (bool, optional): the user will not be able to interact with the plot
+		no_frame (bool, optional): the ImGui frame will not be rendered
+		use_local_time (bool, optional): axis labels will be formatted for your timezone when
+		use_ISO8601 (bool, optional): dates will be formatted according to ISO 8601 where applicable (e.g. YYYY-MM-DD, YYYY-MM, --MM-DD, etc.)
+		use_24hour_clock (bool, optional): times will be formatted using a 24 hour clock
+		pan_button (int, optional): mouse button that enables panning when held
+		pan_mod (int, optional): optional modifier that must be held for panning
+		context_menu_button (int, optional): opens context menus (if enabled) when clicked
+		fit_button (int, optional): fits visible data when double clicked
+		box_select_button (int, optional): begins box selection when pressed and confirms selection when released
+		box_select_mod (int, optional): begins box selection when pressed and confirms selection when released
+		box_select_cancel_button (int, optional): cancels active box selection when pressed
+		query_toggle_mod (int, optional): when held, active box selections turn into queries
+		horizontal_mod (int, optional): expands active box selection/query horizontally to plot edge when held
+		vertical_mod (int, optional): expands active box selection/query vertically to plot edge when held
+		override_mod (int, optional): when held, all input is ignored; used to enable axis/plots as DND sources
+		zoom_mod (int, optional): optional modifier that must be held for scroll wheel zooming
+		zoom_rate (int, optional): zoom rate for scroll (e.g. 0.1f = 10% plot range every scroll click); make negative to invert
+		id (Union[int, str], optional): (deprecated)
+		delay_search (bool, optional): (deprecated)This was used as an optimization hint but is not relevant anymore.
+		no_highlight (bool, optional): (deprecated)Removed because not supported from the backend anymore. To control the highlighting of series use the same argument in `add_plot_legend`
+		no_child (bool, optional): (deprecated)a child window region will not be used to capture mouse scroll (can boost performance for single ImGui window applications)
+		anti_aliased (bool, optional): (deprecated)This feature was deprecated in ImPlot. To enable/disable anti_aliasing use `dpg.configure_app()` with the `anti_aliasing` parameters.
+		query_button (int, optional): (deprecated)This refers to the old way of querying of ImPlot, now replaced with `DragRect()`
+		query_mod (int, optional): (deprecated)This refers to the old way of querying of ImPlot, now replaced with `DragRect()`
+	Returns:
+		Union[int, str]
+	"""
+
+	return internal_dpg.add_plot3d(**kwargs)
+
 def add_plot_annotation(**kwargs):
 	"""	 Adds an annotation to a plot.
 
@@ -5749,6 +5927,46 @@ def add_plot_axis(axis, **kwargs):
 	"""
 
 	return internal_dpg.add_plot_axis(axis, **kwargs)
+
+def add_plot3d_axis(axis, **kwargs):
+	"""	 Adds an axis to a plot.
+
+	Args:
+		axis (int): 
+		label (str, optional): Overrides 'name' as label.
+		user_data (Any, optional): User data for callbacks
+		use_internal_label (bool, optional): Use generated internal label instead of user specified (appends ### uuid).
+		tag (Union[int, str], optional): Unique id used to programmatically refer to the item.If label is unused this will be the label.
+		parent (Union[int, str], optional): Parent to add this item to. (runtime adding)
+		payload_type (str, optional): Sender string type must be the same as the target for the target to run the payload_callback.
+		drop_callback (Callable, optional): Registers a drop callback for drag and drop.
+		show (bool, optional): Attempt to render widget.
+		no_label (bool, optional): the axis label will not be displayed
+		no_gridlines (bool, optional): no grid lines will be displayed
+		no_tick_marks (bool, optional): no tick marks will be displayed
+		no_tick_labels (bool, optional): no text labels will be displayed
+		no_initial_fit (bool, optional): axis will not be initially fit to data extents on the first rendered frame
+		no_menus (bool, optional): the user will not be able to open context menus with right-click
+		no_side_switch (bool, optional): the user will not be able to switch the axis side by dragging it
+		no_highlight (bool, optional): the axis will not have its background highlighted when hovered or held
+		opposite (bool, optional): axis ticks and labels will be rendered on the conventionally opposite side (i.e, right or top)
+		foreground_grid (bool, optional): grid lines will be displayed in the foreground (i.e. on top of data) instead of the background
+		tick_format (str, optional): Sets a custom tick label formatter
+		scale (int, optional): Sets the axis' scale. Can have only mvPlotScale_ values
+		invert (bool, optional): the axis values will be inverted (i.e. growing from right to left)
+		auto_fit (bool, optional): axis will be auto-fitting to data extents
+		range_fit (bool, optional): axis will only fit points if the point is in the visible range of the **orthogonal** axis
+		pan_stretch (bool, optional): panning in a locked or constrained state will cause the axis to stretch if possible
+		lock_min (bool, optional): the axis minimum value will be locked when panning/zooming
+		lock_max (bool, optional): the axis maximum value will be locked when panning/zooming
+		id (Union[int, str], optional): (deprecated)
+		log_scale (bool, optional): (deprecated)Old way to set log scale in the axis. Use 'scale' argument instead.
+		time (bool, optional): (deprecated)Old way to set time scale in the axis. Use 'scale' argument instead.
+	Returns:
+		Union[int, str]
+	"""
+
+	return internal_dpg.add_plot3d_axis(axis, **kwargs)
 
 def add_plot_legend(**kwargs):
 	"""	 Adds a plot legend to a plot.
@@ -5881,6 +6099,34 @@ def add_scatter_series(x, y, **kwargs):
 	"""
 
 	return internal_dpg.add_scatter_series(x, y, **kwargs)
+
+def add_scatter3d_series(x, y, z, **kwargs):
+	"""	 Adds a 3d scatter series to a plot.
+
+	Args:
+		x (Any): 
+		y (Any): 
+		z (Any):
+		label (str, optional): Overrides 'name' as label.
+		user_data (Any, optional): User data for callbacks
+		use_internal_label (bool, optional): Use generated internal label instead of user specified (appends ### uuid).
+		tag (Union[int, str], optional): Unique id used to programmatically refer to the item.If label is unused this will be the label.
+		parent (Union[int, str], optional): Parent to add this item to. (runtime adding)
+		before (Union[int, str], optional): This item will be displayed before the specified item in the parent.
+		source (Union[int, str], optional): Overrides 'id' as value storage key.
+		show (bool, optional): Attempt to render widget.
+		marker (str, optional): marker type of scatter points, "s" for square, "c" for circle, "d" for diamond, "p" for plus, "x" for cross, "a" for Asterisk marker, "up" for upward-pointing triangle marker, "down" for downward-pointing triangle marker, "left for leftward-pointing triangle marker, "right" for rightward-pointing triangle marker, "auto" for automatic selection, default "s".
+		size (Union[List[float], Tuple[float, ...]], optional): sizes of scatter points, default [-1] (automatically).
+		color (Union[List[Union[List[int], Tuple[int, ...]]], Tuple[Union[List[int], Tuple[int, ...]], ...]], optional): Colors for each scatter point (RGBA format, 0-255).
+		pkcolor (Union[List[int], Tuple[int, ...]], optional): Packed colors for each scatter point (32-bit unsigned integer format).
+		filla (float, optional): fill alpha value for scatter points (0.0 = no fill, 1.0 = fully filled), default -1 (automatically).
+		no_clip (bool, optional): markers on the edge of a plot will not be clipped
+		id (Union[int, str], optional): (deprecated)
+	Returns:
+		Union[int, str]
+	"""
+
+	return internal_dpg.add_scatter3d_series(x, y, z, **kwargs)
 
 def add_selectable(**kwargs):
 	"""	 Adds a selectable. Similar to a button but can indicate its selected state.
@@ -8655,12 +8901,12 @@ def set_item_children(item, source, slot):
 
 	return internal_dpg.set_item_children(item, source, slot)
 
-def set_primary_window(window, value=True):
+def set_primary_window(window, value):
 	"""	 Sets the primary window.
 
 	Args:
 		window (Union[int, str]): 
-		value (bool, optional): True to select this window as primary, False to make it a regular window (without any primary window). Only one window at a time can be primary.
+		value (bool): 
 	Returns:
 		None
 	"""
@@ -8760,6 +9006,16 @@ def show_implot_demo():
 	"""
 
 	return internal_dpg.show_implot_demo()
+
+def show_implot3d_demo():
+	"""	 Shows the implot3d demo.
+
+	Args:
+	Returns:
+		None
+	"""
+
+	return internal_dpg.show_implot3d_demo()
 
 def show_item_debug(item):
 	"""	 Shows an item's debug window
@@ -9181,6 +9437,9 @@ mvXAxis3=internal_dpg.mvXAxis3
 mvYAxis=internal_dpg.mvYAxis
 mvYAxis2=internal_dpg.mvYAxis2
 mvYAxis3=internal_dpg.mvYAxis3
+mvXAxis3D=internal_dpg.mvXAxis3D
+mvYAxis3D=internal_dpg.mvYAxis3D
+mvZAxis3D=internal_dpg.mvZAxis3D
 mvPlotScale_Linear=internal_dpg.mvPlotScale_Linear
 mvPlotScale_Time=internal_dpg.mvPlotScale_Time
 mvPlotScale_Log10=internal_dpg.mvPlotScale_Log10
@@ -9448,6 +9707,7 @@ mvListbox=internal_dpg.mvListbox
 mvText=internal_dpg.mvText
 mvCombo=internal_dpg.mvCombo
 mvPlot=internal_dpg.mvPlot
+mvPlot3D=internal_dpg.mvPlot3D
 mvSimplePlot=internal_dpg.mvSimplePlot
 mvDrawlist=internal_dpg.mvDrawlist
 mvWindowAppItem=internal_dpg.mvWindowAppItem
@@ -9496,6 +9756,7 @@ mvAnnotation=internal_dpg.mvAnnotation
 mvAxisTag=internal_dpg.mvAxisTag
 mvLineSeries=internal_dpg.mvLineSeries
 mvScatterSeries=internal_dpg.mvScatterSeries
+mvScatter3DSeries=internal_dpg.mvScatter3DSeries
 mvStemSeries=internal_dpg.mvStemSeries
 mvStairSeries=internal_dpg.mvStairSeries
 mvBarSeries=internal_dpg.mvBarSeries
@@ -9526,6 +9787,7 @@ mvViewportDrawlist=internal_dpg.mvViewportDrawlist
 mvFileExtension=internal_dpg.mvFileExtension
 mvPlotLegend=internal_dpg.mvPlotLegend
 mvPlotAxis=internal_dpg.mvPlotAxis
+mvPlot3DAxis=internal_dpg.mvPlot3DAxis
 mvHandlerRegistry=internal_dpg.mvHandlerRegistry
 mvKeyDownHandler=internal_dpg.mvKeyDownHandler
 mvKeyPressHandler=internal_dpg.mvKeyPressHandler

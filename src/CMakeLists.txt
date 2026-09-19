@@ -39,6 +39,7 @@ set(MARVEL_SOURCES
         "mvFontItems.cpp"
         "mvColors.cpp"
         "mvPlotting.cpp"
+        "mvPlotting3D.cpp"
         "mvContainers.cpp"
 
         "mvCallbackRegistry.cpp"
@@ -72,6 +73,12 @@ set(MARVEL_SOURCES
         "../thirdparty/implot/implot_items.cpp"
         "../thirdparty/implot/implot_demo.cpp"
 
+        # implot3d
+        "../thirdparty/implot3d/implot3d.cpp"
+        "../thirdparty/implot3d/implot3d_items.cpp"
+        "../thirdparty/implot3d/implot3d_meshes.cpp"
+        "../thirdparty/implot3d/implot3d_demo.cpp"
+
         # ImGuiFileDialog
         "../thirdparty/ImGuiFileDialog/ImGuiFileDialog.cpp"
 
@@ -97,6 +104,7 @@ set(MARVEL_SOURCES
 set(MARVEL_INCLUDE_DIR
         "."
         "../thirdparty/implot"
+        "../thirdparty/implot3d"
         "../thirdparty/stb"
         "../thirdparty/imnodes"
         "../thirdparty/ImGuiFileDialog"

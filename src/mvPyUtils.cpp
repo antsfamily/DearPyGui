@@ -1135,8 +1135,9 @@ ToUCharVect(PyObject* value, const std::string& message)
             {
                 items.emplace_back((unsigned char)BufferViewer(buffer_info, i));
             }
-            PyBuffer_Release(&buffer_info);
         }
+
+        PyBuffer_Release(&buffer_info);
     }
 
     else
@@ -1187,8 +1188,9 @@ ToIntVect(PyObject* value, const std::string& message)
             {
                 items.emplace_back(BufferViewer(buffer_info, i));
             }
-            PyBuffer_Release(&buffer_info);
         }
+
+        PyBuffer_Release(&buffer_info);
     }
 
     else
@@ -1274,8 +1276,8 @@ ToFloatVect(PyObject* value, const std::string& message)
             {
                 items.emplace_back(BufferViewer(buffer_info, i));
             }
-            PyBuffer_Release(&buffer_info);
         }
+        PyBuffer_Release(&buffer_info);
     }
 
     else
@@ -1326,8 +1328,8 @@ ToDoubleVect(PyObject* value, const std::string& message)
             {
                 items.emplace_back(BufferViewer(buffer_info, i));
             }
-            PyBuffer_Release(&buffer_info);
         }
+        PyBuffer_Release(&buffer_info);
     }
 
     else
@@ -1889,7 +1891,7 @@ VerifyArguments(int start, PyObject* args, const std::vector<mvPythonDataElement
                     return false;
                 break;
 
-            case mvPyDataType::ListListInt:
+            case mvPyDataType::ListIntList:
                 if (!isPyObject_ListIntList(obj))
                     return false;
                 break;
@@ -1939,7 +1941,7 @@ PythonDataTypeString(mvPyDataType type)
         case mvPyDataType::Callable:       return " : Callable";
         case mvPyDataType::Dict:           return " : dict";
         case mvPyDataType::ListAny:        return " : List[Any]";
-        case mvPyDataType::ListListInt:    return " : List[Union[List[int], Tuple[int, ...]]]";
+        case mvPyDataType::ListIntList:    return " : List[Union[List[int], Tuple[int, ...]]]";
         case mvPyDataType::ListFloatList:  return " : List[List[float]]";
         case mvPyDataType::ListDoubleList: return " : List[List[float]]";
         case mvPyDataType::ListStrList:    return " : List[List[str]]";

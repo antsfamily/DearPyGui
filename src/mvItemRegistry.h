@@ -89,6 +89,7 @@ struct mvItemRegistry
     // debug items
     b8                                      showImGuiDebug = false;
     b8                                      showImPlotDebug = false;
+    b8                                      showImPlot3dDebug = false;
     std::vector<std::shared_ptr<mvAppItem>> debugWindows;
 
     // roots

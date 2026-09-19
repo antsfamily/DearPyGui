@@ -485,6 +485,13 @@ DearPyGui::set_configuration(PyObject* inDict, mvAppItem& itemc, mvWindowAppItem
     flagop("no_scroll_with_mouse", ImGuiWindowFlags_NoScrollWithMouse, outConfig.windowflags);
     flagop("unsaved_document", ImGuiWindowFlags_UnsavedDocument, outConfig.windowflags);
     flagop("no_docking", ImGuiWindowFlags_NoDocking, outConfig.windowflags);
+
+
+    outConfig._oldxpos = itemc.state.pos.x;
+    outConfig._oldypos = itemc.state.pos.y;
+    outConfig._oldWidth = itemc.config.width;
+    outConfig._oldHeight = itemc.config.height;
+    outConfig._oldWindowflags = outConfig.windowflags;
 }
 
 //-----------------------------------------------------------------------------
@@ -1469,17 +1476,12 @@ DearPyGui::draw_window(ImDrawList* drawlist, mvAppItem& item, mvWindowAppItemCon
 
     ScopedID id(item.uuid);
 
-    // For primary windows, we'll need to massage the flags
-    ImGuiWindowFlags windowFlags = config.windowflags;
     if (config.mainWindow)
     {
         ImGui::SetNextWindowBgAlpha(1.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f); // to prevent main window corners from showing
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
         ImGui::SetNextWindowSize(ImVec2((float)GContext->viewport->clientWidth, (float)GContext->viewport->clientHeight));
-        windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoSavedSettings
-            | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove;
-        windowFlags &= ~ImGuiWindowFlags_AlwaysAutoResize;
     }
 
     else if (item.info.dirtyPos)
@@ -1512,7 +1514,7 @@ DearPyGui::draw_window(ImDrawList* drawlist, mvAppItem& item, mvWindowAppItemCon
             ImGui::OpenPopup(item.info.internalLabel.c_str(), config.no_open_over_existing_popup ? ImGuiPopupFlags_NoOpenOverExistingPopup : ImGuiPopupFlags_None);
         }
 
-        if (!ImGui::BeginPopupModal(item.info.internalLabel.c_str(), config.no_close ? nullptr : &item.config.show, windowFlags))
+        if (!ImGui::BeginPopupModal(item.info.internalLabel.c_str(), config.no_close ? nullptr : &item.config.show, config.windowflags))
         {
             if (config.mainWindow)
                 ImGui::PopStyleVar();
@@ -1544,7 +1546,7 @@ DearPyGui::draw_window(ImDrawList* drawlist, mvAppItem& item, mvWindowAppItemCon
             ImGui::OpenPopup(item.info.internalLabel.c_str(), config.no_open_over_existing_popup ? ImGuiPopupFlags_NoOpenOverExistingPopup : ImGuiPopupFlags_None);
         }
 
-        if (!ImGui::BeginPopup(item.info.internalLabel.c_str(), windowFlags))
+        if (!ImGui::BeginPopup(item.info.internalLabel.c_str(), config.windowflags))
         {
             if (config.mainWindow)
                 ImGui::PopStyleVar();
@@ -1579,7 +1581,7 @@ DearPyGui::draw_window(ImDrawList* drawlist, mvAppItem& item, mvWindowAppItemCon
 		ImGuiIO &io = ImGui::GetIO();
         io.ConfigWindowsCopyContentsWithCtrlC = config.copy_contents_shortcut;
 
-        if (!ImGui::Begin(item.info.internalLabel.c_str(), config.no_close ? nullptr : &item.config.show, windowFlags))
+        if (!ImGui::Begin(item.info.internalLabel.c_str(), config.no_close ? nullptr : &item.config.show, config.windowflags))
         {
             if (config.mainWindow)
                 ImGui::PopStyleVar();

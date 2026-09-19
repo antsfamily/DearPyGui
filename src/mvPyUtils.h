@@ -240,7 +240,7 @@ enum class mvPyDataType
     None = 0,
     Integer, Float, Double, String, Bool, Object, Callable, Dict,
     IntList, FloatList, DoubleList, StringList, ListAny,
-    ListListInt, ListFloatList, ListDoubleList, ListStrList, UUID,
+    ListIntList, ListFloatList, ListDoubleList, ListStrList, UUID,
     UUIDList, Long,
     Any
 };

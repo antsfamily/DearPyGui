@@ -6,6 +6,7 @@
 #include "mvToolManager.h"
 
 #include <implot.h>
+#include <implot3d.h>
 #include "imnodes.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"

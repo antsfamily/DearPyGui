@@ -17,6 +17,7 @@
 #include <future>
 #include <thread>
 #include <implot.h>
+#include <implot3d.h>
 #include <frameobject.h>
 #include <imnodes.h>
 #include <stb_image.h>

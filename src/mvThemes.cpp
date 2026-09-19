@@ -4,6 +4,7 @@
 #include "mvThemes.h"
 
 #include <implot.h>
+#include <implot3d.h>
 #include <imnodes.h>
 #include <imgui_internal.h>
 

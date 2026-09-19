@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <implot.h>
+#include <implot3d.h>
 #include <cmath>
 #include "mvTypes.h"
 

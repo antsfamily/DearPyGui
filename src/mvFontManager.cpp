@@ -129,7 +129,7 @@ mvFontManager::drawFontNode(ImFont* font)
 					src_n, src->Name, src->OversampleH, oversample_h, src->OversampleV, oversample_v, src->PixelSnapH, src->GlyphOffset.x, src->GlyphOffset.y);
 			}
 
-			ImGui::DebugNodeFontGlyphesForSrcMask(font, baked, ~0);
+			ImGui::DebugNodeFontGlyphsForSrcMask(font, baked, ~0);
 			ImGui::TreePop();
 		}
 		ImGui::PopID();

@@ -317,6 +317,7 @@ GetEntityCommand(mvAppItemType type)
     case mvAppItemType::mvText:                        return "add_text";
     case mvAppItemType::mvCombo:                       return "add_combo";
     case mvAppItemType::mvPlot:                        return "add_plot";
+    case mvAppItemType::mvPlot3D:                      return "add_plot3d";
     case mvAppItemType::mvSimplePlot:                  return "add_simple_plot";
     case mvAppItemType::mvDrawlist:                    return "add_drawlist";
     case mvAppItemType::mvWindowAppItem:               return "add_window";
@@ -368,6 +369,7 @@ GetEntityCommand(mvAppItemType type)
     case mvAppItemType::mvAxisTag:                     return "add_axis_tag";
     case mvAppItemType::mvLineSeries:                  return "add_line_series";
     case mvAppItemType::mvScatterSeries:               return "add_scatter_series";
+    case mvAppItemType::mvScatter3DSeries:             return "add_scatter3d_series";
     case mvAppItemType::mvStemSeries:                  return "add_stem_series";
     case mvAppItemType::mvStairSeries:                 return "add_stair_series";
     case mvAppItemType::mvBarSeries:                   return "add_bar_series";
@@ -399,6 +401,7 @@ GetEntityCommand(mvAppItemType type)
     case mvAppItemType::mvFileExtension:               return "add_file_extension";
     case mvAppItemType::mvPlotLegend:                  return "add_plot_legend";
     case mvAppItemType::mvPlotAxis:                    return "add_plot_axis";
+    case mvAppItemType::mvPlot3DAxis:                  return "add_plot3d_axis";
     case mvAppItemType::mvHandlerRegistry:             return "add_handler_registry";
     case mvAppItemType::mvKeyDownHandler:              return "add_key_down_handler";
     case mvAppItemType::mvKeyPressHandler:             return "add_key_press_handler";
