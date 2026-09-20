@@ -392,6 +392,7 @@ DearPyGui::draw_scatter3d_series(ImDrawList* drawlist, mvAppItem& item, const mv
 			else if (config.color.size() >= xptr->size())
 			{
 				// Convert ImVec4 to packed colors (ImU32)
+				pkcolor.clear();
 				pkcolor.reserve(config.color.size());
 				for (const auto& color : config.color)
 					pkcolor.push_back(ImGui::GetColorU32(color));
